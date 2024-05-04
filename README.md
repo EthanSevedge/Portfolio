@@ -1,0 +1,1 @@
+Hello! My name is Ethan Sevedge, and I am an amateur programmer with the most experience in Java and Python, though I dabble in bash and batch scripting. This is a portfolio of the random programs I have written over the years, for classes or for personal enjoyment/utility.
