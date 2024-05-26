@@ -35,10 +35,6 @@ firefoxOpen="$(wmctrl -l | grep Firefox)"
 #checks if a firefox window is open yet
 if [[  "" = $firefoxOpen  ]]
 then
-	#ps -ejH
-	#myInfo="$(ps -ejH | grep  "$(basename "$0")")"
-	#echo $myInfo
-	#sleep 600
 	procID=$PPID
 	
 	#waits until terminal window is open, then finds it by its PID
@@ -52,17 +48,22 @@ then
 	#stores first token (delimited by spaces; first token is window ID)
 	#in the variable winID
 	read -ra winID <<< $winOut
-	
-	#keeps term window constantly in focus even while firefox opens
-	#wmctrl -ir $winID -b add,above
-	
+		
 	#opens firefox in new process & sends error and output to /dev/null
 	#this appears to avoid having the sighup signal sent to firefox, shutting it down
 	setsid firefox 1>/dev/null 2>/dev/null &
 	
+	#waits until firefox opens, with pretty loading output
 	while [[ "" = $firefoxOpen ]]
 	do
 		firefoxOpen="$(wmctrl -l | grep Firefox)"
+		echo -e -n "\r\\" 
+		sleep $time 
+		echo -e -n "\r/" 
+		sleep $time
+		echo -e -n "\r-"
+		sleep $time
+		echo -e -n "\r \r"
 	done
 	clear
 	#makes terminal window active again after firefox starts
